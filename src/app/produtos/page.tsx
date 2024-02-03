@@ -1,6 +1,6 @@
 "use client";
 
-import Spinner from "@/components/Spinner";
+import Spinner from "../../components/Spinner";
 import { useSearchParams } from "next/navigation";
 import { Key, useEffect, useState } from "react";
 import ItemsContainer from "./components/ItemsContainer";
