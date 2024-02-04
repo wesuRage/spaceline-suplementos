@@ -26,7 +26,7 @@ export default function Footer() {
       </div>
 
       <div className="flex sm:flex-col sm:justify-center md:flex-row md:justify-around ">
-        <section className="my-5 sm:ms-36">
+        <section className="my-5 md:ms-0 sm:ms-36">
           <h3 className={`${txt} font-extrabold`}>Marcas</h3>
           <ul className="text-white">
             <li className={`hover:underline`}>
@@ -46,7 +46,7 @@ export default function Footer() {
             </li>
           </ul>
         </section>
-        <section className="my-5 sm:ms-36">
+        <section className="my-5 md:ms-0 sm:ms-36">
           <h3 className={`${txt} font-extrabold`}>Categorias</h3>
           <ul className="text-white">
             <li>
@@ -90,7 +90,7 @@ export default function Footer() {
             </li>
           </ul>
         </section>
-        <section className="my-5 sm:ms-36">
+        <section className="my-5 md:ms-0 sm:ms-36">
           <h3 className={`${txt} font-extrabold`}>Fale conosco</h3>
           <ul className="text-white">
             <li>

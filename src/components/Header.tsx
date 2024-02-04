@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Navigation() {
+export default function Header() {
   const Router = useRouter();
 
   const Pesquisar = (event: any) => {

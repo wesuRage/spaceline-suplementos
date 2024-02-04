@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "../components/Navigation";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning={true}>
-        <Navigation />
+        <Header />
         <div className="h-[65px] w-full bg-black"></div>
         {children}
         <Footer />
