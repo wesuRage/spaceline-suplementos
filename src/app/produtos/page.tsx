@@ -4,11 +4,11 @@ import Spinner from "../../components/Spinner";
 import { Key, useEffect, useState } from "react";
 import ItemsContainer from "./components/ItemsContainer";
 import ItemCard from "./components/ItemCard";
-import { Shuffle } from "@/modules/functions/Shuffle";
+import { Shuffle } from "@/functions/Shuffle";
 
 export default function Produtos() {
   const [data, setData] = useState<any>(null);
-  const [isLoading, setLoading] = useState<any>(true);
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch("http://localhost:3000/produtos")

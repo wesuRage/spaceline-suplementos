@@ -1,4 +1,3 @@
-import AuthActions from "@/modules/actions/auth-actions";
 import Link from "next/link";
 
 export default function SignUpForm() {
@@ -9,7 +8,7 @@ export default function SignUpForm() {
           <h1 className="font-bold">Cadastro</h1>
         </div>
         <div>
-          <form action={AuthActions.createAccount}>
+          <form>
             <div className="my-5">
               <label
                 htmlFor="nome"
@@ -31,7 +30,7 @@ export default function SignUpForm() {
                 Email
               </label>
               <input
-                type="text"
+                type="email"
                 name="email"
                 className="text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
               />
