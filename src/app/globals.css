@@ -3,9 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --green-100: #b2f882;
   --green-200: #4dda41;
-  --green-300: #8a8a8a;
 }
 
 ::-webkit-scrollbar {
@@ -17,8 +15,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--green-200);
+  background-color: #333;
   border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--green-200);
 }
 
 ::-moz-selection {

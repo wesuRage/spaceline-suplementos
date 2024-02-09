@@ -36,6 +36,7 @@ export async function PUT(request: Request, context: any) {
       nome,
       email,
       senha,
+      role,
       telefone,
       cep,
       estado,
@@ -54,6 +55,18 @@ export async function PUT(request: Request, context: any) {
     senha = await bcrypt.hash(senha, 10);
     await connectToDatabase();
 
+    const exist = await prisma.usuario.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!exist) {
+      return NextResponse.json(
+        { message: "User doesn't exist" },
+        { status: 400 }
+      );
+    }
     await prisma.usuario.update({
       where: {
         email: Email,
@@ -62,6 +75,7 @@ export async function PUT(request: Request, context: any) {
         nome,
         email,
         senha,
+        role: role || "user",
         telefone: telefone || null,
         cep: cep || null,
         estado: estado || null,
@@ -83,6 +97,7 @@ export async function PUT(request: Request, context: any) {
         nome,
         email,
         senha,
+        role: role || "user",
         telefone: telefone || null,
         cep: cep || null,
         estado: estado || null,

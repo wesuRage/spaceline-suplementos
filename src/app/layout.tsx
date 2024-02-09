@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Provider } from "@/components/Provider";
 
 export const metadata: Metadata = {
   title: "Spaceline Suplementos",
@@ -25,12 +26,14 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         />
       </head>
-      <body suppressHydrationWarning={true}>
-        <Header />
-        <div className="h-[65px] w-full bg-black"></div>
-        {children}
-        <Footer />
-      </body>
+      <Provider>
+        <body suppressHydrationWarning={true}>
+          <Header />
+          <div className="h-[65px] w-full bg-black"></div>
+          {children}
+          <Footer />
+        </body>
+      </Provider>
     </html>
   );
 }

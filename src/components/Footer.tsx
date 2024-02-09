@@ -2,11 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Footer() {
-  const verde = "[var(--green-200)]";
   const txt = "text-[var(--green-200)]";
 
   return (
-    <footer className={`bg-black border-t-4 border-${verde} pb-5 w-full`}>
+    <footer className={`bg-black border-t-4 border-[#333] pb-5 w-full`}>
       <div className={`md:flex md:justify-center ${txt} pt-5 text-xl`}>
         <Image
           src="/logo.jpeg"

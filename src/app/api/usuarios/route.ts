@@ -9,6 +9,7 @@ export async function POST(request: Request) {
       nome,
       email,
       senha,
+      role,
       telefone,
       cep,
       estado,
@@ -31,11 +32,37 @@ export async function POST(request: Request) {
 
     await connectToDatabase();
 
+    const exist = await prisma.usuario.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (exist) {
+      return NextResponse.json(
+        { message: "User already exists" },
+        { status: 400 }
+      );
+    }
+
+    const admins = [
+      "weslley.nmiranda@gmail.com",
+      "weslley@spaceline.shop",
+      "kaue@spaceline.shop",
+    ];
+
+    if (admins.includes(email)) {
+      role = "admin";
+    } else {
+      role = "user";
+    }
+
     await prisma.usuario.create({
       data: {
         nome,
         email,
         senha,
+        role,
         telefone: telefone || null,
         cep: cep || null,
         estado: estado || null,

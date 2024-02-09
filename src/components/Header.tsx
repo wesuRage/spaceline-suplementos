@@ -1,10 +1,12 @@
 "use client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
   const Router = useRouter();
+  const { data: session } = useSession();
 
   const Pesquisar = (event: any) => {
     if (event.key == "Enter") {
@@ -25,7 +27,7 @@ export default function Header() {
 
   return (
     <header className="z-10">
-      <nav className="bg-black border-b-4 border-[var(--green-200)] fixed min-w-full">
+      <nav className="bg-black border-b-4 border-[#333] fixed min-w-full">
         <div className="p-4 flex justify-between align-middle text-[var(--green-200)]">
           <Link prefetch href={"/"}>
             <Image
@@ -42,21 +44,33 @@ export default function Header() {
           </Link>
           <div className="flex gap-5">
             <input
+              autoComplete="off"
               type="text"
               id="buscar"
               onKeyDown={Pesquisar}
               placeholder="Pesquisar"
-              className="text-white bg-[#333] h-6 w-60 sm:w-48 rounded-xl p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+              className="transition ease-in-out duration-200 text-white bg-[#333] h-6 w-60 sm:w-48 rounded-xl p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
             />
             <button onClick={PesquisarBotao} className="h-0">
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
-            <Link href={"/perfil"}>
-              <i className="fa-solid fa-user"></i>
-            </Link>
-            <Link href={"/carrinho"}>
-              <i className="fa-solid fa-cart-shopping"></i>
-            </Link>
+
+            {session?.user.role == "user" ||
+              (!session && (
+                <>
+                  <Link href={"/perfil"}>
+                    <i className="fa-solid fa-user"></i>
+                  </Link>
+                  <Link href={"/carrinho"}>
+                    <i className="fa-solid fa-cart-shopping"></i>
+                  </Link>
+                </>
+              ))}
+            {session?.user.role == "admin" && (
+              <Link href={"/dashboard"}>
+                <i className="fa-solid fa-gear"></i>
+              </Link>
+            )}
           </div>
         </div>
       </nav>

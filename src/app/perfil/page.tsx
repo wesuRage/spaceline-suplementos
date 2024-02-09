@@ -1,3 +1,27 @@
+"use client";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 export default function Perfil() {
-  return <h1>Perfil</h1>;
+  const router = useRouter();
+  const { data: session } = useSession();
+  if (!session) {
+    router.push("/login");
+  }
+
+  if (session?.user.role == "admin") {
+    router.push("/dashboard");
+  }
+
+  return (
+    <>
+      <button
+        onClick={() => {
+          signOut();
+        }}
+      >
+        Logout
+      </button>
+    </>
+  );
 }
