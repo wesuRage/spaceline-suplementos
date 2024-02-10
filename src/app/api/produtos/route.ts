@@ -19,41 +19,63 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const {
-      imagemID,
+      imagemURL,
       nomeProduto,
       preco,
       precoRiscado,
       descricao,
       comprados,
       tags,
+      altura,
+      largura,
+      comprimento,
+      peso,
     } = await request.json();
 
-    if (!imagemID || !nomeProduto || !preco || !descricao || !tags) {
+    if (
+      !imagemURL ||
+      !nomeProduto ||
+      !preco ||
+      !descricao ||
+      !tags ||
+      !altura ||
+      !largura ||
+      !comprimento ||
+      !peso
+    ) {
       return NextResponse.json({ message: "Invalid Data" }, { status: 422 });
     }
 
     await connectToDatabase();
     await prisma.produto.create({
       data: {
-        imagemID,
+        imagemURL,
         nomeProduto,
         preco,
         precoRiscado: precoRiscado || null,
         descricao,
         comprados: comprados || 0,
         tags,
+        altura,
+        largura,
+        comprimento,
+        peso,
       },
     });
 
     return NextResponse.json(
       {
-        imagemID,
+        imagemURL,
         nomeProduto,
         preco,
         precoRiscado: precoRiscado || null,
         descricao,
         comprados: comprados || 0,
         tags,
+        altura,
+        largura,
+        comprimento,
+        peso,
       },
       { status: 200 }
     );

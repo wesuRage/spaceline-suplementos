@@ -30,11 +30,30 @@ model Usuario {
 
 model Produto {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
-  imagemID      String @unique
+  imagemURL     String @unique
   nomeProduto   String @unique
   preco         Int
-  precoRiscado  Int?
+  precoRiscado  Int
   descricao     String
-  comprados     Int?
+  comprados     Int
   tags          String
+  altura        Int
+  largura       Int
+  comprimento   Int
+  peso          Int
+}
+
+model Pedido {
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  nomeProduto      String
+  nomeDestinatario String
+  cep              String
+  estado           String
+  cidade           String
+  bairro           String
+  rua              String
+  numero           Int
+  valor            Int
+  valorFrete       Int
+  metodoPagamento  String
 }

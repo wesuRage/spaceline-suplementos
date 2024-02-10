@@ -33,22 +33,23 @@ const nextAuthOptions: NextAuthOptions = {
           return null;
         }
 
-        const data = {
-          email: user.email,
-          role: user.role,
-        };
-
-        return data;
+        return user;
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.email = user.email;
+        token.role = user.role;
+      }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) session.user.role = token.role;
+      if (session.user) {
+        session.user.email = token.email;
+        session.user.role = token.role;
+      }
       return session;
     },
   },

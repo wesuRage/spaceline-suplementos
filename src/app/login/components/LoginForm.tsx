@@ -2,14 +2,25 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 export default function LoginForm() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
   const [visibility, setVisibility] = useState("password");
+
+  if (session) {
+    if (session?.user.role != "admin") {
+      router.push("/perfil");
+      return;
+    } else {
+      router.push("/dashboard");
+      return;
+    }
+  }
 
   function verSenha() {
     if (visibility === "password") {

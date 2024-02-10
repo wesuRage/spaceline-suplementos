@@ -26,7 +26,7 @@ export default function Header() {
   };
 
   return (
-    <header className="z-10">
+    <header className="fixed z-10">
       <nav className="bg-black border-b-4 border-[#333] fixed min-w-full">
         <div className="p-4 flex justify-between align-middle text-[var(--green-200)]">
           <Link prefetch href={"/"}>
@@ -55,17 +55,16 @@ export default function Header() {
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
 
-            {session?.user.role == "user" ||
-              (!session && (
-                <>
-                  <Link href={"/perfil"}>
-                    <i className="fa-solid fa-user"></i>
-                  </Link>
-                  <Link href={"/carrinho"}>
-                    <i className="fa-solid fa-cart-shopping"></i>
-                  </Link>
-                </>
-              ))}
+            {(session?.user.role == "user" || !session) && (
+              <>
+                <Link href={"/perfil"}>
+                  <i className="fa-solid fa-user"></i>
+                </Link>
+                <Link href={"/carrinho"}>
+                  <i className="fa-solid fa-cart-shopping"></i>
+                </Link>
+              </>
+            )}
             {session?.user.role == "admin" && (
               <Link href={"/dashboard"}>
                 <i className="fa-solid fa-gear"></i>

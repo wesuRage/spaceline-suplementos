@@ -103,6 +103,7 @@ export default function SignUpForm() {
                 type={visibility}
                 name="senha"
                 id="senha"
+                minLength={8}
                 className="transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
               />
             </div>

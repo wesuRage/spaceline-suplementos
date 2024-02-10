@@ -31,7 +31,7 @@ export async function PUT(request: Request, context: any) {
     const produto = params.produto;
 
     const {
-      imagemID,
+      imagemURL,
       nomeProduto,
       preco,
       precoRiscado,
@@ -40,7 +40,7 @@ export async function PUT(request: Request, context: any) {
       tags,
     } = await request.json();
 
-    if (!imagemID || !nomeProduto || !preco || !descricao || !tags) {
+    if (!imagemURL || !nomeProduto || !preco || !descricao || !tags) {
       return NextResponse.json({ message: "Invalid Data" }, { status: 422 });
     }
 
@@ -50,7 +50,7 @@ export async function PUT(request: Request, context: any) {
         nomeProduto: produto,
       },
       data: {
-        imagemID,
+        imagemURL,
         nomeProduto,
         preco,
         precoRiscado,

@@ -11,7 +11,7 @@ export default function Produtos() {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch("http://localhost/api/produtos")
+    fetch("/api/produtos")
       .then((res) => res.json())
       .then((res) => {
         setData(res);
@@ -38,7 +38,7 @@ export default function Produtos() {
           return (
             <ItemCard
               key={key}
-              imagemID={item.imagemID}
+              imagemURL={item.imagemURL}
               nomeProduto={item.nomeProduto}
               precoRiscado={item.precoRiscado}
               preco={item.preco}

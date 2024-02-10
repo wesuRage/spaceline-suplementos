@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -16,7 +18,8 @@ export default function Footer() {
           className="sm:block md:inline ml-auto mr-auto md:ml-0 md:mr-0 select-none"
         />
         <h2 className="font-bold m-4 sm:text-center text-sm select-none">
-          SPACELINE SUPLEMENTOS <i className="fa-regular fa-copyright"></i> 2024
+          SPACELINE SUPLEMENTOS <i className="fa-regular fa-copyright"></i>{" "}
+          {new Date().getFullYear()}
         </h2>
       </div>
 
@@ -59,7 +62,7 @@ export default function Footer() {
             </li>
             <li className="hover:underline">
               <Link prefetch href={"/produtos?search=creatina"}>
-                Creatina
+                Creatinas
               </Link>
             </li>
             <li className="hover:underline">
