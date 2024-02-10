@@ -43,7 +43,7 @@ export default function LoginForm() {
       return;
     }
 
-    router.push("/perfil");
+    router.replace("/perfil");
   }
 
   return (

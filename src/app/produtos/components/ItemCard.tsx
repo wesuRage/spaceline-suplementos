@@ -26,7 +26,7 @@ export default function ItemCard({
         height={120}
         className="rounded-md mb-2"
       />
-      <h1 className="text-sm truncate">{nomeProduto}</h1>
+      <h1 className="text-sm truncate w-full">{nomeProduto}</h1>
       <br />
       <h3 className="text-[#888] text-sm line-through">
         {"R$" + `${precoRiscado}`.replace(".", ",")}

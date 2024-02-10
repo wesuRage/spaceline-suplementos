@@ -82,7 +82,7 @@ export default function Adicionar() {
   return (
     <main className="flex justify-center">
       <PageContainer>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} className="flex justify-center">
           <section className="max-w-[500px]">
             <div className="mb-5">
               <label
@@ -268,14 +268,13 @@ export default function Adicionar() {
                 />
               </div>
             </div>
+            <button
+              type="submit"
+              className="p-2 font-bold rounded my-5 border-2 border-[var(--green-200)] text-[var(--green-200)] hover:text-black hover:bg-[var(--green-200)]"
+            >
+              Adicionar Produto
+            </button>
           </section>
-
-          <button
-            type="submit"
-            className="p-2 font-bold rounded my-5 border-2 border-[var(--green-200)] text-[var(--green-200)] hover:text-black hover:bg-[var(--green-200)]"
-          >
-            Adicionar Produto
-          </button>
         </form>
       </PageContainer>
     </main>

@@ -32,15 +32,15 @@ model Produto {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   imagemURL     String @unique
   nomeProduto   String @unique
-  preco         Int
-  precoRiscado  Int
+  preco         Float
+  precoRiscado  Float
   descricao     String
   comprados     Int
   tags          String
-  altura        Int
-  largura       Int
-  comprimento   Int
-  peso          Int
+  altura        Float
+  largura       Float
+  comprimento   Float
+  peso          Float
 }
 
 model Pedido {
@@ -54,6 +54,6 @@ model Pedido {
   rua              String
   numero           Int
   valor            Int
-  valorFrete       Int
+  valorFrete       Float
   metodoPagamento  String
 }
