@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         imagemURL,
         nomeProduto,
         preco,
-        precoRiscado: precoRiscado || null,
+        precoRiscado: precoRiscado || 0,
         descricao,
         comprados: comprados || 0,
         tags,

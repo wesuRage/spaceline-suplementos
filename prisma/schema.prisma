@@ -33,7 +33,7 @@ model Produto {
   imagemURL     String @unique
   nomeProduto   String @unique
   preco         Float
-  precoRiscado  Float
+  precoRiscado  Float?
   descricao     String
   comprados     Int
   tags          String

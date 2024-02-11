@@ -6,6 +6,8 @@ export default function ProdutosContainer({
   children,
 }: ProdutosContainerProps) {
   return (
-    <div className="w-full border-2 border-[#333] my-5 p-5">{children}</div>
+    <div className="w-full border-2 border-[#333] my-5 p-5 max-h-[200px] overflow-y-scroll overflow-x-hidden">
+      {children}
+    </div>
   );
 }

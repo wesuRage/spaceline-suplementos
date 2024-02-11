@@ -6,10 +6,9 @@ import PageContainer from "./components/PageContainer";
 import { Key, useEffect, useState } from "react";
 import Spinner from "@/components/Spinner";
 import { GetFirstName } from "@/functions/GetFirstName";
-import { Metadata } from "next";
 import ProdutosContainer from "./components/ProdutosContainer";
 import Link from "next/link";
-import Produto from "./components/Protudo";
+import Produto from "./components/Produto";
 
 export default function Dashboard() {
   const router = useRouter();

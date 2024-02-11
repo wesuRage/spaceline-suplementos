@@ -29,12 +29,10 @@ export default function Produtos() {
     return produtosShuffle;
   });
 
-  console.log(produtos);
-
   return (
     <main className="flex justify-center">
       <ItemsContainer>
-        {data.map((item: any, key: Key) => {
+        {produtosShuffle.map((item: any, key: Key) => {
           return (
             <ItemCard
               key={key}
