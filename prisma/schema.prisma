@@ -7,25 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+type Produtos {
+  nomeProduto   String
+}
+
 model Usuario {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   nome          String
   email         String @unique
   role          String
   senha         String
-  telefone      Int?
-  cep           Int?
+  telefone      String?
+  cep           String?
   estado        String?
   cidade        String?
   bairro        String?
   rua           String?
-  numero        Int?
+  numero        String?
   complemento   String?
-  cpf           Int?
-  cartao        Int?
+  cpf           String?
+  cartao        String?
   nomeCartao    String?
-  cvv           Int?
+  cvv           String?
   validade      String?
+  carrinho      Produtos[]
+}
+
+type Review {
+  nome          String
+  estrelas      Int
+  comentario    String
 }
 
 model Produto {
@@ -33,7 +44,7 @@ model Produto {
   imagemURL     String @unique
   nomeProduto   String @unique
   preco         Float
-  precoRiscado  Float?
+  precoRiscado  Float
   descricao     String
   comprados     Int
   tags          String
@@ -41,6 +52,7 @@ model Produto {
   largura       Float
   comprimento   Float
   peso          Float
+  avaliacoes    Review[]
 }
 
 model Pedido {

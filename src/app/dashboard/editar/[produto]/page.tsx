@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
+import { useSession } from "next-auth/react";
 
 export default function Editar({ params }: { params: any }) {
   const router = useRouter();
@@ -22,6 +23,18 @@ export default function Editar({ params }: { params: any }) {
   const [image, setImage] = useState<any>(null);
   const [prevImage, setPrevImage] = useState<any>();
   const [prevNomeProduto, setPrevNomeProduto] = useState<any>();
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/login");
+    },
+  });
+
+  useEffect(() => {
+    if (session?.user.role != "admin") {
+      router.push("/perfil");
+    }
+  }, []);
 
   useEffect(() => {
     fetch(`/api/produtos/${params.produto}`)
@@ -89,7 +102,6 @@ export default function Editar({ params }: { params: any }) {
           peso,
         }),
       });
-      console.log("com imagem");
     } else {
       fetch(`/api/produtos/${prevNomeProduto}`, {
         method: "PUT",
@@ -108,7 +120,6 @@ export default function Editar({ params }: { params: any }) {
           peso,
         }),
       });
-      console.log("sem imagem");
     }
     router.push("/dashboard");
   }
@@ -123,7 +134,7 @@ export default function Editar({ params }: { params: any }) {
             <div className="mb-5">
               <label
                 htmlFor="imagemProduto"
-                className="text-[var(--green-200)] font-bold block"
+                className="text-main-green font-bold block"
               >
                 Imagem *
               </label>
@@ -132,7 +143,7 @@ export default function Editar({ params }: { params: any }) {
                   src={image}
                   alt="produto"
                   layout="fill"
-                  className="border-2 border-[var(--green-200)] rounded-md"
+                  className="border-2 border-main-green rounded-md"
                 ></Image>
               </div>
               <input
@@ -145,7 +156,7 @@ export default function Editar({ params }: { params: any }) {
             <div className="mb-5">
               <label
                 htmlFor="nomeProduto"
-                className="text-[var(--green-200)] font-bold"
+                className="text-main-green font-bold"
               >
                 Nome *
               </label>
@@ -155,15 +166,12 @@ export default function Editar({ params }: { params: any }) {
                 type="text"
                 value={nomeProduto}
                 onChange={(e: any) => setNomeProduto(e.target.value)}
-                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
               />
             </div>
             <div className="flex justify-between mb-5">
               <div>
-                <label
-                  htmlFor="preco"
-                  className="text-[var(--green-200)] font-bold"
-                >
+                <label htmlFor="preco" className="text-main-green font-bold">
                   Preço *
                 </label>
 
@@ -173,15 +181,12 @@ export default function Editar({ params }: { params: any }) {
                   onChange={(e: any) => setPreco(parseFloat(e.target.value))}
                   type="text"
                   name="preco"
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
               <div>
-                <label
-                  htmlFor="preco"
-                  className="text-[var(--green-200)] font-bold"
-                >
-                  Preço Riscado
+                <label htmlFor="preco" className="text-main-green font-bold">
+                  Preço Riscado *
                 </label>
 
                 <input
@@ -192,15 +197,12 @@ export default function Editar({ params }: { params: any }) {
                   }
                   type="text"
                   name="preco"
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
             </div>
             <div className="mb-5">
-              <label
-                htmlFor="descricao"
-                className="text-[var(--green-200)] font-bold"
-              >
+              <label htmlFor="descricao" className="text-main-green font-bold">
                 Descrição *
               </label>
 
@@ -210,13 +212,13 @@ export default function Editar({ params }: { params: any }) {
                 value={descricao}
                 onChange={(e: any) => setDescricao(e.target.value)}
                 rows={5}
-                className="block transition ease-in-out duration-200 text-white bg-[#333] h-auto w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                className="block transition ease-in-out duration-200 text-white bg-[#333] h-auto w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
               ></textarea>
             </div>
             <div className="mb-5">
               <label
                 htmlFor="nomeProduto"
-                className="text-[var(--green-200)] font-bold"
+                className="text-main-green font-bold"
               >
                 Tags *
               </label>
@@ -226,14 +228,14 @@ export default function Editar({ params }: { params: any }) {
                 type="text"
                 value={tags}
                 onChange={(e: any) => setTags(e.target.value)}
-                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
               />
             </div>
             <div className="flex justify-between">
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold text-[10px]"
+                  className="text-main-green font-bold text-[10px]"
                 >
                   Altura (cm) *
                 </label>
@@ -242,13 +244,13 @@ export default function Editar({ params }: { params: any }) {
                   required
                   value={altura}
                   onChange={(e: any) => setAltura(parseFloat(e.target.value))}
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold text-[10px]"
+                  className="text-main-green font-bold text-[10px]"
                 >
                   Largura (cm) *
                 </label>
@@ -257,13 +259,13 @@ export default function Editar({ params }: { params: any }) {
                   required
                   value={largura}
                   onChange={(e: any) => setLargura(parseFloat(e.target.value))}
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold text-[10px]"
+                  className="text-main-green font-bold text-[10px]"
                 >
                   Comprimento (cm) *
                 </label>
@@ -274,7 +276,7 @@ export default function Editar({ params }: { params: any }) {
                   onChange={(e: any) =>
                     setComprimento(parseFloat(e.target.value))
                   }
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
             </div>
@@ -282,7 +284,7 @@ export default function Editar({ params }: { params: any }) {
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold"
+                  className="text-main-green font-bold"
                 >
                   Peso (kg) *
                 </label>
@@ -291,15 +293,15 @@ export default function Editar({ params }: { params: any }) {
                   required
                   value={peso}
                   onChange={(e: any) => setPeso(parseFloat(e.target.value))}
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold"
+                  className="text-main-green font-bold"
                 >
-                  Comprados
+                  Comprados *
                 </label>
                 <input
                   type="number"
@@ -307,13 +309,13 @@ export default function Editar({ params }: { params: any }) {
                   value={comprados}
                   min={0}
                   onChange={(e: any) => setComprados(parseInt(e.target.value))}
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
             </div>
             <button
               type="submit"
-              className="p-2 font-bold rounded my-5 border-2 border-[var(--green-200)] text-[var(--green-200)] hover:text-black hover:bg-[var(--green-200)]"
+              className="transition ease-in-out duration-200 p-2 font-bold rounded my-5 border-2 border-main-green text-main-green hover:text-black hover:bg-main-green"
             >
               Editar Produto
             </button>

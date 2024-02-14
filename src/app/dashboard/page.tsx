@@ -9,36 +9,46 @@ import { GetFirstName } from "@/functions/GetFirstName";
 import ProdutosContainer from "./components/ProdutosContainer";
 import Link from "next/link";
 import Produto from "./components/Produto";
+import PedidosContainer from "./components/PedidosContainer";
+import Pedido from "./components/Pedido";
 
 export default function Dashboard() {
   const router = useRouter();
   const [data, setData] = useState<any>();
   const [produtos, setProdutos] = useState<any>();
-  const { data: session } = useSession();
+  const [pedidos, setPedidos] = useState<any>();
 
-  if (session?.user.role != "admin") {
-    router.push("/perfil");
-    return;
-  }
-
-  if (!session) {
-    router.push("/login");
-    return;
-  }
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/login");
+    },
+  });
 
   useEffect(() => {
-    fetch(`/api/usuarios/${session.user.email}`)
+    if (session?.user.role != "admin") {
+      router.push("/perfil");
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
+    fetch(`/api/usuarios/${session?.user.email}`)
       .then((response) => response.json())
       .then((response: any) => {
         setData(response);
       });
-  }, []);
 
-  useEffect(() => {
     fetch("/api/produtos")
       .then((response) => response.json())
       .then((response: any) => {
         setProdutos(response);
+      });
+
+    fetch("/api/pedidos")
+      .then((response) => response.json())
+      .then((response: any) => {
+        setPedidos(response);
       });
   }, []);
 
@@ -48,19 +58,45 @@ export default function Dashboard() {
     <main className="flex justify-center">
       <PageContainer>
         <div>
-          <div className="text-center text-xl text-[var(--green-200)] font-bold">
+          <div className="text-center text-xl text-main-green font-bold">
             Olá, {GetFirstName(data.nome)}
           </div>
 
           <section>
-            <div className="flex justify-between text-[var(--green-200)]">
+            <div className="text-main-green">
               <div>
-                <i className="fa-solid fa-house "></i>
+                <i className="fa-solid fa-pen-to-square"></i>
+                <p className="font-bold ms-2 inline">Pedidos</p>
+              </div>
+            </div>
+            <PedidosContainer>
+              {pedidos?.length != 0 ? (
+                pedidos?.map((pedido: any, key: Key) => {
+                  return (
+                    <Pedido
+                      src={pedido.imagemURL}
+                      pedido={pedido.pedido}
+                      key={key}
+                    />
+                  );
+                })
+              ) : (
+                <h1 className="text-center">Ainda não há pedidos.</h1>
+              )}
+            </PedidosContainer>
+          </section>
+
+          <hr className="border-t-2 border-[#333] my-3" />
+
+          <section>
+            <div className="flex justify-between text-main-green">
+              <div>
+                <i className="fa-solid fa-house"></i>
                 <p className="font-bold ms-2 inline">Estoque</p>
               </div>
 
               <Link
-                className="p-2 border-2 border-[var(--green-200)] rounded hover:bg-[var(--green-200)] hover:text-black font-bold"
+                className="transition ease-in-out duration-200 p-2 border-2 border-main-green rounded hover:bg-main-green hover:text-black font-bold"
                 href={"/dashboard/adicionar"}
               >
                 Adicionar

@@ -36,6 +36,7 @@ export async function POST(request: Request) {
       !imagemURL ||
       !nomeProduto ||
       !preco ||
+      !precoRiscado ||
       !descricao ||
       !tags ||
       !altura ||
@@ -52,14 +53,15 @@ export async function POST(request: Request) {
         imagemURL,
         nomeProduto,
         preco,
-        precoRiscado: precoRiscado || 0,
+        precoRiscado,
         descricao,
-        comprados: comprados || 0,
+        comprados,
         tags,
         altura,
         largura,
         comprimento,
         peso,
+        avaliacoes: [],
       },
     });
 
@@ -68,14 +70,15 @@ export async function POST(request: Request) {
         imagemURL,
         nomeProduto,
         preco,
-        precoRiscado: precoRiscado || null,
+        precoRiscado,
         descricao,
-        comprados: comprados || 0,
+        comprados,
         tags,
         altura,
         largura,
         comprimento,
         peso,
+        avaliacoes: [],
       },
       { status: 200 }
     );

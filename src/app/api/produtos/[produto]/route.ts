@@ -38,13 +38,38 @@ export async function PUT(request: Request, context: any) {
       descricao,
       comprados,
       tags,
+      altura,
+      largura,
+      comprimento,
+      peso,
+      avaliacoes: novasAvaliacoes,
     } = await request.json();
 
-    if (!imagemURL || !nomeProduto || !preco || !descricao || !tags) {
+    if (
+      !imagemURL ||
+      !nomeProduto ||
+      !preco ||
+      !descricao ||
+      !tags ||
+      !altura ||
+      !largura ||
+      !comprimento ||
+      !peso
+    ) {
       return NextResponse.json({ message: "Invalid Data" }, { status: 422 });
     }
 
     await connectToDatabase();
+
+    const produtoAtual = await prisma.produto.findFirst({
+      where: {
+        nomeProduto: produto,
+      },
+    });
+
+    const avaliacoesCombinadas =
+      produtoAtual?.avaliacoes.concat(novasAvaliacoes);
+
     await prisma.produto.update({
       where: {
         nomeProduto: produto,
@@ -57,6 +82,11 @@ export async function PUT(request: Request, context: any) {
         descricao,
         comprados,
         tags,
+        altura,
+        largura,
+        comprimento,
+        peso,
+        avaliacoes: avaliacoesCombinadas,
       },
     });
 

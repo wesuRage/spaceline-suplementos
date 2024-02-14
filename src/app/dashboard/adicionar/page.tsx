@@ -2,8 +2,9 @@
 import PageContainer from "./components/PageContainer";
 import type { PutBlobResult } from "@vercel/blob";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Adicionar() {
   const router = useRouter();
@@ -19,6 +20,18 @@ export default function Adicionar() {
   const [comprimento, setComprimento] = useState<number>();
   const [peso, setPeso] = useState<number>();
   const [image, setImage] = useState<any>(null);
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/login");
+    },
+  });
+
+  useEffect(() => {
+    if (session?.user.role != "admin") {
+      router.push("/perfil");
+    }
+  }, []);
 
   const displayImage = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -87,7 +100,7 @@ export default function Adicionar() {
             <div className="mb-5">
               <label
                 htmlFor="imagemProduto"
-                className="text-[var(--green-200)] font-bold block"
+                className="text-main-green font-bold block"
               >
                 Imagem *
               </label>
@@ -98,7 +111,7 @@ export default function Adicionar() {
                     alt="produto"
                     width={300}
                     height={300}
-                    className="border-2 border-[var(--green-200)] rounded-md"
+                    className="border-2 border-main-green rounded-md"
                   ></Image>
                 </div>
               )}
@@ -113,7 +126,7 @@ export default function Adicionar() {
             <div className="mb-5">
               <label
                 htmlFor="nomeProduto"
-                className="text-[var(--green-200)] font-bold"
+                className="text-main-green font-bold"
               >
                 Nome *
               </label>
@@ -122,15 +135,12 @@ export default function Adicionar() {
                 required
                 type="text"
                 onChange={(e: any) => setNomeProduto(e.target.value)}
-                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
               />
             </div>
             <div className="flex justify-between mb-5">
               <div>
-                <label
-                  htmlFor="preco"
-                  className="text-[var(--green-200)] font-bold"
-                >
+                <label htmlFor="preco" className="text-main-green font-bold">
                   Preço *
                 </label>
 
@@ -139,15 +149,12 @@ export default function Adicionar() {
                   onChange={(e: any) => setPreco(parseFloat(e.target.value))}
                   type="text"
                   name="preco"
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
               <div>
-                <label
-                  htmlFor="preco"
-                  className="text-[var(--green-200)] font-bold"
-                >
-                  Preço Riscado
+                <label htmlFor="preco" className="text-main-green font-bold">
+                  Preço Riscado *
                 </label>
 
                 <input
@@ -157,15 +164,12 @@ export default function Adicionar() {
                   }
                   type="text"
                   name="preco"
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
             </div>
             <div className="mb-5">
-              <label
-                htmlFor="descricao"
-                className="text-[var(--green-200)] font-bold"
-              >
+              <label htmlFor="descricao" className="text-main-green font-bold">
                 Descrição *
               </label>
 
@@ -174,13 +178,13 @@ export default function Adicionar() {
                 required
                 onChange={(e: any) => setDescricao(e.target.value)}
                 rows={5}
-                className="block transition ease-in-out duration-200 text-white bg-[#333] h-auto w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                className="block transition ease-in-out duration-200 text-white bg-[#333] h-auto w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
               ></textarea>
             </div>
             <div className="mb-5">
               <label
                 htmlFor="nomeProduto"
-                className="text-[var(--green-200)] font-bold"
+                className="text-main-green font-bold"
               >
                 Tags *
               </label>
@@ -189,14 +193,14 @@ export default function Adicionar() {
                 required
                 type="text"
                 onChange={(e: any) => setTags(e.target.value)}
-                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
               />
             </div>
             <div className="flex justify-between">
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold text-[10px]"
+                  className="text-main-green font-bold text-[10px]"
                 >
                   Altura (cm) *
                 </label>
@@ -204,13 +208,13 @@ export default function Adicionar() {
                   type="text"
                   required
                   onChange={(e: any) => setAltura(parseFloat(e.target.value))}
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold text-[10px]"
+                  className="text-main-green font-bold text-[10px]"
                 >
                   Largura (cm) *
                 </label>
@@ -218,13 +222,13 @@ export default function Adicionar() {
                   type="text"
                   required
                   onChange={(e: any) => setLargura(parseFloat(e.target.value))}
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold text-[10px]"
+                  className="text-main-green font-bold text-[10px]"
                 >
                   Comprimento (cm) *
                 </label>
@@ -234,7 +238,7 @@ export default function Adicionar() {
                   onChange={(e: any) =>
                     setComprimento(parseFloat(e.target.value))
                   }
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
             </div>
@@ -242,7 +246,7 @@ export default function Adicionar() {
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold"
+                  className="text-main-green font-bold"
                 >
                   Peso (kg) *
                 </label>
@@ -250,28 +254,28 @@ export default function Adicionar() {
                   type="text"
                   required
                   onChange={(e: any) => setPeso(parseFloat(e.target.value))}
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
               <div>
                 <label
                   htmlFor="descricao"
-                  className="text-[var(--green-200)] font-bold"
+                  className="text-main-green font-bold"
                 >
-                  Comprados
+                  Comprados *
                 </label>
                 <input
                   type="number"
                   required
                   min={0}
                   onChange={(e: any) => setComprados(parseInt(e.target.value))}
-                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
             </div>
             <button
               type="submit"
-              className="p-2 font-bold rounded my-5 border-2 border-[var(--green-200)] text-[var(--green-200)] hover:text-black hover:bg-[var(--green-200)]"
+              className="transition ease-in-out duration-200 p-2 font-bold rounded my-5 border-2 border-main-green text-main-green hover:text-black hover:bg-main-green"
             >
               Adicionar Produto
             </button>

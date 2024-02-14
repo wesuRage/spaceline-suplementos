@@ -6,10 +6,23 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Deletar({ params }: { params: any }) {
   const [data, setData] = useState<any>();
   const router = useRouter();
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/login");
+    },
+  });
+
+  useEffect(() => {
+    if (session?.user.role != "admin") {
+      router.push("/perfil");
+    }
+  }, []);
 
   async function deletar() {
     await fetch(`/api/produtos/${params.produto}`, {
@@ -35,7 +48,7 @@ export default function Deletar({ params }: { params: any }) {
   return (
     <main className="flex justify-center">
       <PageContainer>
-        <h1 className="font-bold text-center text-[var(--green-200)] mb-5">
+        <h1 className="font-bold text-center text-red-500 mb-5">
           <i className="fa-solid fa-triangle-exclamation"></i> Deseja mesmo
           deletar?
         </h1>
@@ -45,16 +58,29 @@ export default function Deletar({ params }: { params: any }) {
             alt={data.nomeProduto}
             width={100}
             height={100}
-            className="border-2 border-[var(--green-200)] rounded"
+            className="border-2 border-main-green rounded"
           />
-          <h1 className="text-md max-w-[400px] truncate">{data.nomeProduto}</h1>
-          <p className="text-sm max-w-[400px] truncate">{data.descricao}</p>
-          <p className="text-[var(--green-200)]">R${data.preco}</p>
+          <h1 className="text-md text-main-green font-bold max-w-[400px] line-clam-2 mb-2">
+            {data.nomeProduto}
+          </h1>
+          <p className="text-sm max-w-[400px] line-clamp-3 mb-2">
+            {data.descricao}
+          </p>
+
+          {data.precoRiscado ? (
+            <p className="text-[#888] line-through">R${data.precoRiscado}</p>
+          ) : (
+            <p className="text-[#888] invisible">R$0</p>
+          )}
+
+          <p className="text-main-green bg-[var(--green-100)] rounded p-[2px]">
+            R${data.preco}
+          </p>
 
           <div className="mt-5">
             <Link
               href={"/dashboard"}
-              className="transition ease-in-out duration-200 font-bold text-[var(--green-200)] hover:text-black border-2 border-[var(--green-200)] hover:bg-[var(--green-200)] rounded p-2 "
+              className="transition ease-in-out duration-200 font-bold text-main-green hover:text-black border-2 border-main-green hover:bg-main-green rounded p-2 "
             >
               Cancelar
             </Link>

@@ -37,12 +37,12 @@ export default function Footer() {
               </Link>
             </li>
             <li className="hover:underline">
-              <Link prefetch href={"/produtos?search=max-titanium"}>
+              <Link prefetch href={"/produtos?search=max titanium"}>
                 Max Titanium
               </Link>
             </li>
             <li className="hover:underline">
-              <Link prefetch href={"/produtos?search=black-skull"}>
+              <Link prefetch href={"/produtos?search=black skull"}>
                 Black Skull
               </Link>
             </li>
@@ -54,7 +54,7 @@ export default function Footer() {
             <li>
               <Link
                 prefetch
-                href={"/produtos?search=whey-protein"}
+                href={"/produtos?search=whey protein"}
                 className="hover:underline"
               >
                 Whey Protein
@@ -66,7 +66,7 @@ export default function Footer() {
               </Link>
             </li>
             <li className="hover:underline">
-              <Link prefetch href={"/produtos?search=pre-treino"}>
+              <Link prefetch href={"/produtos?search=pre treino"}>
                 Pré Treinos
               </Link>
             </li>
