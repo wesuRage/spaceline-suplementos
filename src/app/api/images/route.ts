@@ -17,7 +17,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     });
 
     return NextResponse.json(blob);
-  } else {
-    return NextResponse.json({ message: "No file or filename" });
   }
+
+  return NextResponse.json({ message: "No file or filename" });
 }

@@ -80,12 +80,12 @@ export default function Editar({ params }: { params: any }) {
 
       const newBlob = (await response.json()) as PutBlobResult;
 
-      fetch("/api/images", {
+      await fetch("/api/images", {
         method: "DELETE",
         body: JSON.stringify({ url: prevImage }),
       });
 
-      fetch(`/api/produtos/${nomeProduto}`, {
+      await fetch(`/api/produtos/${nomeProduto}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -100,10 +100,11 @@ export default function Editar({ params }: { params: any }) {
           largura,
           comprimento,
           peso,
+          avaliacoes: [],
         }),
       });
     } else {
-      fetch(`/api/produtos/${prevNomeProduto}`, {
+      await fetch(`/api/produtos/${prevNomeProduto}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -118,9 +119,11 @@ export default function Editar({ params }: { params: any }) {
           largura,
           comprimento,
           peso,
+          avaliacoes: [],
         }),
       });
     }
+
     router.push("/dashboard");
   }
 
@@ -136,7 +139,7 @@ export default function Editar({ params }: { params: any }) {
                 htmlFor="imagemProduto"
                 className="text-main-green font-bold block"
               >
-                Imagem *
+                Imagem
               </label>
               <div className="relative mb-5 w-[300px] h-[300px]">
                 <Image
@@ -158,7 +161,7 @@ export default function Editar({ params }: { params: any }) {
                 htmlFor="nomeProduto"
                 className="text-main-green font-bold"
               >
-                Nome *
+                Nome
               </label>
 
               <input
@@ -172,7 +175,7 @@ export default function Editar({ params }: { params: any }) {
             <div className="flex justify-between mb-5">
               <div>
                 <label htmlFor="preco" className="text-main-green font-bold">
-                  Preço *
+                  Preço
                 </label>
 
                 <input
@@ -186,15 +189,15 @@ export default function Editar({ params }: { params: any }) {
               </div>
               <div>
                 <label htmlFor="preco" className="text-main-green font-bold">
-                  Preço Riscado *
+                  Preço Riscado
                 </label>
 
                 <input
                   required
                   value={precoRiscado}
-                  onChange={(e: any) =>
-                    setPrecoRiscado(parseFloat(e.target.value))
-                  }
+                  onChange={(e: any) => {
+                    return setPrecoRiscado(parseFloat(e.target.value));
+                  }}
                   type="text"
                   name="preco"
                   className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
@@ -203,7 +206,7 @@ export default function Editar({ params }: { params: any }) {
             </div>
             <div className="mb-5">
               <label htmlFor="descricao" className="text-main-green font-bold">
-                Descrição *
+                Descrição
               </label>
 
               <textarea
@@ -220,7 +223,7 @@ export default function Editar({ params }: { params: any }) {
                 htmlFor="nomeProduto"
                 className="text-main-green font-bold"
               >
-                Tags *
+                Tags
               </label>
 
               <input
@@ -237,7 +240,7 @@ export default function Editar({ params }: { params: any }) {
                   htmlFor="descricao"
                   className="text-main-green font-bold text-[10px]"
                 >
-                  Altura (cm) *
+                  Altura (cm)
                 </label>
                 <input
                   type="text"
@@ -252,7 +255,7 @@ export default function Editar({ params }: { params: any }) {
                   htmlFor="descricao"
                   className="text-main-green font-bold text-[10px]"
                 >
-                  Largura (cm) *
+                  Largura (cm)
                 </label>
                 <input
                   type="text"
@@ -267,7 +270,7 @@ export default function Editar({ params }: { params: any }) {
                   htmlFor="descricao"
                   className="text-main-green font-bold text-[10px]"
                 >
-                  Comprimento (cm) *
+                  Comprimento (cm)
                 </label>
                 <input
                   type="text"
@@ -286,7 +289,7 @@ export default function Editar({ params }: { params: any }) {
                   htmlFor="descricao"
                   className="text-main-green font-bold"
                 >
-                  Peso (kg) *
+                  Peso (kg)
                 </label>
                 <input
                   type="text"
@@ -301,7 +304,7 @@ export default function Editar({ params }: { params: any }) {
                   htmlFor="descricao"
                   className="text-main-green font-bold"
                 >
-                  Comprados *
+                  Comprados
                 </label>
                 <input
                   type="number"

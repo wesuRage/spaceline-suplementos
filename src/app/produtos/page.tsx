@@ -46,6 +46,8 @@ export default function Produtos() {
       }
     });
 
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
     return (
       <main className="flex justify-center">
         <div>
@@ -154,7 +156,7 @@ export default function Produtos() {
         </div>
         <div className="mt-2">
           <h1 className="ms-5 font-bold text-xl text-main-green">
-            Você tambem pode gostar
+            Você também pode gostar
           </h1>
 
           <ItemsContainer>

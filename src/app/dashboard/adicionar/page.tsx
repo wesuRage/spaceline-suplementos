@@ -55,22 +55,6 @@ export default function Adicionar() {
 
     const newBlob = (await response.json()) as PutBlobResult;
 
-    const data = {
-      imagemURL: newBlob.url,
-      nomeProduto,
-      preco,
-      precoRiscado,
-      descricao,
-      comprados,
-      tags,
-      altura,
-      largura,
-      comprimento,
-      peso,
-    };
-
-    console.log(data);
-
     fetch("/api/produtos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -86,6 +70,7 @@ export default function Adicionar() {
         largura,
         comprimento,
         peso,
+        avaliacoes: [],
       }),
     });
 
@@ -102,7 +87,7 @@ export default function Adicionar() {
                 htmlFor="imagemProduto"
                 className="text-main-green font-bold block"
               >
-                Imagem *
+                Imagem
               </label>
               {image && (
                 <div className="relative mb-5">
@@ -128,7 +113,7 @@ export default function Adicionar() {
                 htmlFor="nomeProduto"
                 className="text-main-green font-bold"
               >
-                Nome *
+                Nome
               </label>
 
               <input
@@ -141,7 +126,7 @@ export default function Adicionar() {
             <div className="flex justify-between mb-5">
               <div>
                 <label htmlFor="preco" className="text-main-green font-bold">
-                  Preço *
+                  Preço
                 </label>
 
                 <input
@@ -154,7 +139,7 @@ export default function Adicionar() {
               </div>
               <div>
                 <label htmlFor="preco" className="text-main-green font-bold">
-                  Preço Riscado *
+                  Preço Riscado
                 </label>
 
                 <input
@@ -170,7 +155,7 @@ export default function Adicionar() {
             </div>
             <div className="mb-5">
               <label htmlFor="descricao" className="text-main-green font-bold">
-                Descrição *
+                Descrição
               </label>
 
               <textarea
@@ -186,7 +171,7 @@ export default function Adicionar() {
                 htmlFor="nomeProduto"
                 className="text-main-green font-bold"
               >
-                Tags *
+                Tags
               </label>
 
               <input
@@ -202,7 +187,7 @@ export default function Adicionar() {
                   htmlFor="descricao"
                   className="text-main-green font-bold text-[10px]"
                 >
-                  Altura (cm) *
+                  Altura (cm)
                 </label>
                 <input
                   type="text"
@@ -216,7 +201,7 @@ export default function Adicionar() {
                   htmlFor="descricao"
                   className="text-main-green font-bold text-[10px]"
                 >
-                  Largura (cm) *
+                  Largura (cm)
                 </label>
                 <input
                   type="text"
@@ -230,7 +215,7 @@ export default function Adicionar() {
                   htmlFor="descricao"
                   className="text-main-green font-bold text-[10px]"
                 >
-                  Comprimento (cm) *
+                  Comprimento (cm)
                 </label>
                 <input
                   type="text"
@@ -248,7 +233,7 @@ export default function Adicionar() {
                   htmlFor="descricao"
                   className="text-main-green font-bold"
                 >
-                  Peso (kg) *
+                  Peso (kg)
                 </label>
                 <input
                   type="text"
@@ -262,7 +247,7 @@ export default function Adicionar() {
                   htmlFor="descricao"
                   className="text-main-green font-bold"
                 >
-                  Comprados *
+                  Comprados
                 </label>
                 <input
                   type="number"

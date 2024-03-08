@@ -17,7 +17,7 @@ export default function ItemCard({
   return (
     <Link
       href={`/produtos/${nomeProduto}`}
-      className="transition ease-in-out duration-200 text-white border-2 border-[#333] hover:border-main-green w-[120px] ms-2 p-2 rounded-md"
+      className="my-2 transition ease-in-out duration-200 text-white border-2 border-[#333] hover:border-main-green w-[120px] ms-2 p-2 rounded-md"
     >
       <div className="relative max-w-[100px] h-[100px] mb-2">
         <Image

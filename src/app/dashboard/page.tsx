@@ -89,7 +89,7 @@ export default function Dashboard() {
           <hr className="border-t-2 border-[#333] my-3" />
 
           <section>
-            <div className="flex justify-between text-main-green">
+            <div className="flex justify-between items-center text-main-green">
               <div>
                 <i className="fa-solid fa-house"></i>
                 <p className="font-bold ms-2 inline">Estoque</p>

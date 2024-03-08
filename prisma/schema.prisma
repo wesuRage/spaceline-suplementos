@@ -7,7 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-type Produtos {
+model Carrinho {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  email         String @unique
   nomeProduto   String
 }
 
@@ -30,7 +32,6 @@ model Usuario {
   nomeCartao    String?
   cvv           String?
   validade      String?
-  carrinho      Produtos[]
 }
 
 type Review {

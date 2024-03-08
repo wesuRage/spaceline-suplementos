@@ -26,7 +26,7 @@ export default function Produto({ src, nome, preco, key }: ProdutoProps) {
       <div className="hidden md:inline h-[20px] border-[1px] border-[#333] w-0 ms-5 mt-2"></div>
       <p className="hidden md:inline text-main-green ms-5 mt-2">R${preco}</p>
       <div className="hidden md:inline h-[20px] border-[1px] border-[#333] w-0 ms-5 mt-2"></div>
-      <div className="z-2">
+      <div className="z-2 flex">
         <Link
           href={`/dashboard/editar/${nome}`}
           className="transition ease-in-out duration-200 text-main-green border-2 border-main-green p-1 rounded-xl hover:text-black hover:bg-main-green"

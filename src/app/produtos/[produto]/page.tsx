@@ -22,10 +22,36 @@ export default function Produto({ params }: { params: any }) {
     }
   }
 
-  function adicionarCarrinho() {
+  async function adicionarCarrinho() {
     if (!session) {
       router.push("/login");
     }
+
+    const result = await fetch(`/api/carrinho/${session?.user.email}`).then(
+      (res) => res.json()
+    );
+
+    let notInCart = true;
+
+    for (const item of result) {
+      if (item.nomeProduto === decodeURI(params.produto)) {
+        notInCart = false;
+      }
+    }
+
+    if (notInCart) {
+      await fetch(`/api/carrinho/${session?.user.email}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: session?.user.email,
+          nomeProduto: decodeURI(params.produto),
+        }),
+      });
+    }
+
+    const botao = document.getElementById("adicionar")!;
+    botao.innerHTML = "ADICIONADO";
   }
 
   function editar() {
@@ -64,12 +90,14 @@ export default function Produto({ params }: { params: any }) {
     return tagsArray.some((tag: string) => data.tags.split(" ").includes(tag));
   });
 
+  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
   return (
     <main className="flex justify-center">
       <div>
         <PageContainer>
           <div className="md:flex justify-center">
-            <div className="relative w-[300px] h-[300px] me-5">
+            <div className="relative min-w-[300px] h-[300px] me-5">
               <Image
                 src={data.imagemURL}
                 alt={data.nomeProduto}
@@ -95,11 +123,14 @@ export default function Produto({ params }: { params: any }) {
               <br />
               <br />
               <p>{data.descricao}</p>
+            </div>
+            <div>
               {!session || session.user.role == "user" ? (
                 <>
                   <button
                     onClick={adicionarCarrinho}
-                    className="border-2 border-main-green text-main-green bg-[#111] font-bold rounded p-2 w-full mt-5"
+                    id="adicionar"
+                    className="border-2 border-main-green text-main-green bg-black font-bold rounded p-2 w-full mt-5"
                   >
                     ADICIONAR AO CARRINHO
                   </button>

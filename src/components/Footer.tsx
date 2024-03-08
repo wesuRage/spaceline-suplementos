@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Footer() {
-  const txt = "text-[var(--green-200)]";
+  const txt = "text-main-green";
 
   return (
     <footer className={`bg-black border-t-4 border-[#333] pb-5 w-full`}>
@@ -83,11 +83,6 @@ export default function Footer() {
             <li className="hover:underline">
               <Link prefetch href={"/produtos?search=acessorio"}>
                 Acessórios
-              </Link>
-            </li>
-            <li className="hover:underline">
-              <Link prefetch href={"/produtos?search=kit"}>
-                Kits
               </Link>
             </li>
           </ul>

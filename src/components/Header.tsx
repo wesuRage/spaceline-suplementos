@@ -28,7 +28,7 @@ export default function Header() {
   return (
     <header className="fixed z-10">
       <nav className="bg-black border-b-4 border-[#333] fixed min-w-full">
-        <div className="p-4 flex justify-between align-middle text-[var(--green-200)]">
+        <div className="p-4 flex justify-between align-middle text-main-green">
           <Link prefetch href={"/"}>
             <Image
               src="/logo.jpeg"
@@ -49,7 +49,7 @@ export default function Header() {
               id="buscar"
               onKeyDown={Pesquisar}
               placeholder="Pesquisar"
-              className="transition ease-in-out duration-200 text-white bg-[#333] h-6 w-60 sm:w-48 rounded-xl p-3 box-border outline-0 border-2 border-black focus:border-[var(--green-200)]"
+              className="transition ease-in-out duration-200 text-white bg-[#333] h-6 w-60 sm:w-48 rounded-xl p-3 box-border outline-0 border-2 border-black focus:border-main-green"
             />
             <button onClick={PesquisarBotao} className="h-0">
               <i className="fa-solid fa-magnifying-glass"></i>
