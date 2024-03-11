@@ -9,12 +9,14 @@ import Image from "next/image";
 import ItemsContainer from "../components/ItemsContainer";
 import ItemCard from "../components/ItemCard";
 import { Shuffle } from "@/functions/Shuffle";
+import "./style.css";
 
 export default function Produto({ params }: { params: any }) {
   const { data: session } = useSession();
   const router = useRouter();
   const [data, setData] = useState<any>();
   const [produtos, setProdutos] = useState<any>();
+  const [magnify, setMagnify] = useState({});
 
   function comprarAgora() {
     if (!session) {
@@ -25,33 +27,33 @@ export default function Produto({ params }: { params: any }) {
   async function adicionarCarrinho() {
     if (!session) {
       router.push("/login");
-    }
+    } else {
+      const result = await fetch(`/api/carrinho/${session?.user.email}`).then(
+        (res) => res.json()
+      );
 
-    const result = await fetch(`/api/carrinho/${session?.user.email}`).then(
-      (res) => res.json()
-    );
+      let notInCart = true;
 
-    let notInCart = true;
-
-    for (const item of result) {
-      if (item.nomeProduto === decodeURI(params.produto)) {
-        notInCart = false;
+      for (const item of result) {
+        if (item.nomeProduto === decodeURI(params.produto)) {
+          notInCart = false;
+        }
       }
-    }
 
-    if (notInCart) {
-      await fetch(`/api/carrinho/${session?.user.email}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: session?.user.email,
-          nomeProduto: decodeURI(params.produto),
-        }),
-      });
-    }
+      if (notInCart) {
+        await fetch(`/api/carrinho/${session?.user.email}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: session?.user.email,
+            nomeProduto: decodeURI(params.produto),
+          }),
+        });
+      }
 
-    const botao = document.getElementById("adicionar")!;
-    botao.innerHTML = "ADICIONADO";
+      const botao = document.getElementById("adicionar")!;
+      botao.innerHTML = "ADICIONADO";
+    }
   }
 
   function editar() {
@@ -92,19 +94,45 @@ export default function Produto({ params }: { params: any }) {
 
   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
+  function handleMouseMove(e: any) {
+    e.preventDefault();
+
+    const { offsetX, offsetY, target } = e.nativeEvent;
+    const { offsetWidth, offsetHeight } = target;
+
+    const xPercentage = (offsetX / offsetWidth) * 100;
+    const yPercentage = (offsetY / offsetHeight) * 100;
+
+    setMagnify((prev) => ({
+      ...prev,
+      display: "block",
+      backgroundImage: `url("${data.imagemURL}")`,
+      backgroundPosition: `${xPercentage}% ${yPercentage}%`,
+      top: `${offsetY}px`,
+      left: `${offsetX}px`,
+    }));
+  }
+
+  function handleMouseLeave() {
+    setMagnify((prev) => ({ ...prev, display: "none" }));
+  }
+
   return (
     <main className="flex justify-center">
       <div>
         <PageContainer>
           <div className="md:flex justify-center">
-            <div className="relative min-w-[300px] h-[300px] me-5">
+            <div className="relative min-w-[300px] h-[300px] me-5 cursor-none">
               <Image
                 src={data.imagemURL}
                 alt={data.nomeProduto}
                 draggable={false}
                 layout="fill"
-                className="border-2 border-[#333] rounded-xl select-none"
+                className="rounded-xl select-none "
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
               />
+              <div className="magnify" style={magnify}></div>
             </div>
             <div className="inline max-w-[300px] sm:block">
               <h1 className="text-2xl text-main-green font-bold">

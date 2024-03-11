@@ -8,7 +8,9 @@ export default function SignUpForm() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [repsenha, setRepsenha] = useState("");
   const [error, setError] = useState("");
+  const [errorSenha, setErrorSenha] = useState("");
   const [visibility, setVisibility] = useState("password");
 
   function verSenha() {
@@ -21,6 +23,11 @@ export default function SignUpForm() {
 
   async function createAccount(e: any) {
     e.preventDefault();
+
+    if (senha !== repsenha) {
+      setErrorSenha("Senha inválida, verifique novamente");
+      return;
+    }
 
     const result = await fetch("/api/usuarios", {
       method: "POST",
@@ -104,6 +111,31 @@ export default function SignUpForm() {
                 className="transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
               />
             </div>
+            <div className="my-5">
+              <label
+                htmlFor="senha"
+                className="font-bold text-main-green block"
+              >
+                Repita a senha
+              </label>
+              <input
+                required
+                onChange={(e) => {
+                  setRepsenha(e.target.value);
+                }}
+                autoComplete="off"
+                type={visibility}
+                name="senha"
+                id="repsenha"
+                minLength={8}
+                className="transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
+              />
+            </div>
+            {errorSenha && (
+              <div className="w-full rounded bg-red-400 text-red-700 mb-5 text-center border-2 border-black">
+                {errorSenha}
+              </div>
+            )}
             <div className="mb-5">
               <input
                 type="checkbox"
