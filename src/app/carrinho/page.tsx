@@ -52,6 +52,15 @@ export default function Carrinho() {
   });
 
   todosOsProdutos = todosOsProdutos.join(",");
+  let precoTotal: number;
+
+  data.map((item: any) => {
+    if (precoTotal == undefined) {
+      precoTotal = parseFloat(item.preco.replace(",", "."));
+    } else {
+      precoTotal += parseFloat(item.preco.replace(",", "."));
+    }
+  });
 
   return (
     <main className="flex justify-center">
@@ -76,6 +85,10 @@ export default function Carrinho() {
                 href={`/comprar?itens=${todosOsProdutos}`}
               >
                 COMPRAR TUDO
+                <div className="hidden md:inline h-[20px] border-[1px] border-black w-0 mx-2 mt-0.5"></div>
+                <h1 className="inline">
+                  R${`${new Number(precoTotal!).toFixed(2)}`.replace(".", ",")}
+                </h1>
               </Link>
             </div>
           </>

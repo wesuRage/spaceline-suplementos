@@ -20,6 +20,7 @@ export async function POST(request: Request) {
   try {
     const {
       imagemURL,
+      fatosNutricionaisURL,
       nomeProduto,
       preco,
       precoRiscado,
@@ -30,6 +31,8 @@ export async function POST(request: Request) {
       largura,
       comprimento,
       peso,
+      tipo,
+      escolhas,
     } = await request.json();
 
     if (
@@ -42,7 +45,9 @@ export async function POST(request: Request) {
       !altura ||
       !largura ||
       !comprimento ||
-      !peso
+      !comprados ||
+      !peso ||
+      !tipo
     ) {
       return NextResponse.json({ message: "Invalid Data" }, { status: 422 });
     }
@@ -51,6 +56,7 @@ export async function POST(request: Request) {
     await prisma.produto.create({
       data: {
         imagemURL,
+        fatosNutricionaisURL: fatosNutricionaisURL || "",
         nomeProduto,
         preco,
         precoRiscado,
@@ -60,6 +66,8 @@ export async function POST(request: Request) {
         altura,
         largura,
         comprimento,
+        tipo,
+        escolhas,
         peso,
         avaliacoes: [],
       },
@@ -68,6 +76,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         imagemURL,
+        fatosNutricionaisURL: fatosNutricionaisURL || "",
         nomeProduto,
         preco,
         precoRiscado,

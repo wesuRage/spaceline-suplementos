@@ -34,6 +34,13 @@ export default function Deletar({ params }: { params: any }) {
       body: JSON.stringify({ url: data.imagemURL }),
     });
 
+    if (data.fatosNutricionaisURL) {
+      await fetch(`/api/images`, {
+        method: "DELETE",
+        body: JSON.stringify({ url: data.fatosNutricionaisURL }),
+      });
+    }
+
     router.replace("/dashboard");
   }
 

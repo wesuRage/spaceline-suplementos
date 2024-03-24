@@ -65,6 +65,7 @@ export default function InformacoesCompra() {
         nomeCartao: nomeCartao?.toUpperCase(),
         cvv,
         validade,
+        produtosComprados: data.produtosComprados,
       }),
     });
 
@@ -101,6 +102,7 @@ export default function InformacoesCompra() {
                 <input
                   type="text"
                   name="cpf"
+                  required
                   value={cpf}
                   onKeyUp={handleCpf}
                   onChange={(e: any) => setCpf(e.target.value)}
@@ -118,6 +120,7 @@ export default function InformacoesCompra() {
                 </label>
                 <input
                   type="text"
+                  required
                   name="numeroCartao"
                   value={cartao}
                   maxLength={20}
@@ -138,6 +141,7 @@ export default function InformacoesCompra() {
                   <input
                     type="text"
                     name="nomeCartao"
+                    required
                     value={nomeCartao}
                     onKeyUp={handleNomeCartao}
                     onChange={(e: any) => setNomeCartao(e.target.value)}
@@ -152,6 +156,7 @@ export default function InformacoesCompra() {
                   <input
                     type="text"
                     name="cvv"
+                    required
                     value={cvv}
                     maxLength={3}
                     onKeyUp={handleCvv}
@@ -170,6 +175,7 @@ export default function InformacoesCompra() {
                   <input
                     type="text"
                     name="validade"
+                    required
                     value={validade}
                     onKeyUp={handleValidade}
                     onChange={(e: any) => setValidade(e.target.value)}
@@ -183,7 +189,7 @@ export default function InformacoesCompra() {
                 type="submit"
                 className="transition ease-in-out duration-200 p-2 font-bold rounded my-5 border-2 border-main-green text-main-green hover:text-black hover:bg-main-green"
               >
-                Editar
+                Enviar
               </button>
             </div>
           </div>

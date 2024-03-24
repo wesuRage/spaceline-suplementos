@@ -5,25 +5,7 @@ import bcrypt from "bcrypt";
 
 export async function POST(request: Request) {
   try {
-    let {
-      nome,
-      email,
-      senha,
-      role,
-      telefone,
-      cep,
-      estado,
-      cidade,
-      bairro,
-      rua,
-      numero,
-      complemento,
-      cpf,
-      cartao,
-      nomeCartao,
-      cvv,
-      validade,
-    } = await request.json();
+    let { nome, email, senha, role } = await request.json();
     if (!nome || !email || !senha) {
       return NextResponse.json({ message: "Invalid Data" }, { status: 422 });
     }
@@ -47,8 +29,8 @@ export async function POST(request: Request) {
 
     const admins = [
       "weslley.nmiranda@gmail.com",
-      "weslley@spaceline.shop",
-      "kaue@spaceline.shop",
+      "kaueflotenciocraft@gmail.com",
+      "contato@spaceline.shop",
     ];
 
     if (admins.includes(email)) {
@@ -76,6 +58,7 @@ export async function POST(request: Request) {
         nomeCartao: null,
         cvv: null,
         validade: null,
+        produtosComprados: [],
       },
     });
 
@@ -97,6 +80,7 @@ export async function POST(request: Request) {
         nomeCartao: null,
         cvv: null,
         validade: null,
+        produtosComprados: [],
       },
       { status: 201 }
     );

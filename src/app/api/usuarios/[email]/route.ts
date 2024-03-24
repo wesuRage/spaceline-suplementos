@@ -50,6 +50,7 @@ export async function PUT(request: Request, context: any) {
       nomeCartao,
       cvv,
       validade,
+      produtosComprados,
     } = await request.json();
 
     senha = await bcrypt.hash(senha, 10);
@@ -67,6 +68,11 @@ export async function PUT(request: Request, context: any) {
         { status: 400 }
       );
     }
+
+    // Atualiza a lista de produtosComprados adicionando os novos produtos ao final do array
+    const updatedProdutosComprados =
+      exist.produtosComprados.concat(produtosComprados);
+
     await prisma.usuario.update({
       where: {
         email: Email,
@@ -89,6 +95,7 @@ export async function PUT(request: Request, context: any) {
         nomeCartao: nomeCartao || null,
         cvv: cvv || null,
         validade: validade || null,
+        produtosComprados: updatedProdutosComprados,
       },
     });
 
@@ -111,6 +118,7 @@ export async function PUT(request: Request, context: any) {
         nomeCartao: nomeCartao || null,
         cvv: cvv || null,
         validade: validade || null,
+        produtosComprados: updatedProdutosComprados,
       },
       { status: 200 }
     );

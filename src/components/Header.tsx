@@ -26,7 +26,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed z-10">
+    <header className="fixed z-20">
       <nav className="bg-black border-b-4 border-[#333] fixed min-w-full">
         <div className="p-4 flex justify-between align-middle text-main-green">
           <Link prefetch href={"/"}>

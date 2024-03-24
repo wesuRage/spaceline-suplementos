@@ -43,9 +43,20 @@ export default function Perfil() {
 
           <hr className="border-t-2 border-[#333] my-3" />
 
+          <div className="flex justify-center">
+            <Link
+              href="/comprados"
+              className="transition ease-in-out duration-200 p-2 border-2 border-main-green bg-main-green text-black font-bold rounded-sm"
+            >
+              VER ITENS COMPRADOS
+            </Link>
+          </div>
+
+          <hr className="border-t-2 border-[#333] my-3" />
+
           <section className="flex justify-center">
             <div>
-              <div className="text-main-green">
+              <div className="text-main-green text-xl">
                 <i className="fa-solid fa-house"></i>
                 <p className="font-bold ms-2 inline">Informações de entrega</p>
               </div>
@@ -67,12 +78,26 @@ export default function Perfil() {
                     className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                   />
                 </div>
+                <div className="mb-5">
+                  <label htmlFor="cpf" className="text-main-green font-bold">
+                    CPF
+                  </label>
+                  <input
+                    type="text"
+                    name="cpf"
+                    value={data.cpf}
+                    placeholder="000.000.000-00"
+                    readOnly
+                    className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
+                  />
+                </div>
                 <div className="mb-5 flex justify-between">
                   <div>
                     <label
                       htmlFor="telefone"
                       className="text-main-green font-bold"
                     >
+                      <i className="fa-brands fa-whatsapp me-2"></i>
                       Telefone
                     </label>
                     <input
@@ -211,7 +236,7 @@ export default function Perfil() {
 
           <section className="flex justify-center">
             <div>
-              <div className="text-main-green">
+              <div className="text-main-green text-xl">
                 <i className="fa-regular fa-credit-card"></i>
                 <p className="font-bold ms-2 inline">Informações de compra</p>
               </div>
@@ -224,9 +249,10 @@ export default function Perfil() {
                   <input
                     type="text"
                     name="cpf"
+                    required
                     value={data.cpf}
+                    maxLength={14}
                     placeholder="000.000.000-00"
-                    readOnly
                     className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                   />
                 </div>
@@ -310,7 +336,7 @@ export default function Perfil() {
               className="text-red-500 border-2 border-red-500 p-2 rounded hover:text-black hover:bg-red-500 transiti ease-in-out duration-200 font-bold"
               onClick={() => signOut()}
             >
-              Logout
+              Sair da conta
             </button>
           </div>
         </div>

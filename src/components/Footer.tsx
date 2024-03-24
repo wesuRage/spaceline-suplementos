@@ -4,11 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Footer() {
-  const txt = "text-main-green";
-
   return (
-    <footer className={`bg-black border-t-4 border-[#333] pb-5 w-full`}>
-      <div className={`md:flex md:justify-center ${txt} pt-5 text-xl`}>
+    <footer className={`bg-black border-t-4 border-[#333] pb-5 max-w-full`}>
+      <div className={`md:flex md:justify-center text-main-green pt-5 text-xl`}>
         <Image
           src="/logo.jpeg"
           alt="logo"
@@ -23,13 +21,9 @@ export default function Footer() {
         </h2>
       </div>
 
-      <div className={`flex justify-center ${txt} text-xs`}>
-        <p>CNPJ: 00.000.000/0000-00</p>
-      </div>
-
       <div className="flex sm:flex-col sm:justify-center md:flex-row md:justify-around ">
         <section className="my-5 md:ms-0 sm:ms-36">
-          <h3 className={`${txt} font-extrabold`}>Marcas</h3>
+          <h3 className={`text-main-green font-extrabold`}>Marcas</h3>
           <ul className="text-white">
             <li className={`hover:underline`}>
               <Link prefetch href={"/produtos?search=growth"}>
@@ -46,10 +40,15 @@ export default function Footer() {
                 Black Skull
               </Link>
             </li>
+            <li className="hover:underline">
+              <Link prefetch href={"/produtos?search=integralmedica"}>
+                Integralmedica
+              </Link>
+            </li>
           </ul>
         </section>
         <section className="my-5 md:ms-0 sm:ms-36">
-          <h3 className={`${txt} font-extrabold`}>Categorias</h3>
+          <h3 className={`text-main-green font-extrabold`}>Categorias</h3>
           <ul className="text-white">
             <li>
               <Link
@@ -88,11 +87,11 @@ export default function Footer() {
           </ul>
         </section>
         <section className="my-5 md:ms-0 sm:ms-36">
-          <h3 className={`${txt} font-extrabold`}>Fale conosco</h3>
+          <h3 className={`text-main-green font-extrabold`}>Fale conosco</h3>
           <ul className="text-white">
             <li>
               <Link target="_blank" href={"mailto:contato@spaceline.shop"}>
-                <i className={`fa-regular fa-envelope ${txt}`}></i>{" "}
+                <i className={`fa-regular fa-envelope text-main-green`}></i>{" "}
                 <p className={`hover:underline inline`}>
                   contato@spaceline.shop
                 </p>
@@ -103,13 +102,13 @@ export default function Footer() {
                 target="_blank"
                 href={"https://www.instagram.com/space.line1/"}
               >
-                <i className={`fa-brands fa-instagram ${txt}`}></i>{" "}
+                <i className={`fa-brands fa-instagram text-main-green`}></i>{" "}
                 <p className={`hover:underline inline`}>@space.line1</p>
               </Link>
             </li>
             <li>
               <Link target="_blank" href={"https://wa.me/554199521909"}>
-                <i className={`fa-brands fa-whatsapp ${txt}`}></i>{" "}
+                <i className={`fa-brands fa-whatsapp text-main-green`}></i>{" "}
                 <p className={`hover:underline inline`}>+55 (41) 9 9952-1909</p>
               </Link>
             </li>

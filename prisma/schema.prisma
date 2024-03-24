@@ -32,6 +32,7 @@ model Usuario {
   nomeCartao    String?
   cvv           String?
   validade      String?
+  produtosComprados String[]
 }
 
 type Review {
@@ -41,32 +42,41 @@ type Review {
 }
 
 model Produto {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  imagemURL     String @unique
-  nomeProduto   String @unique
-  preco         Float
-  precoRiscado  Float
-  descricao     String
-  comprados     Int
-  tags          String
-  altura        Float
-  largura       Float
-  comprimento   Float
-  peso          Float
-  avaliacoes    Review[]
+  id                   String @id @default(auto()) @map("_id") @db.ObjectId
+  imagemURL            String @unique
+  fatosNutricionaisURL String? @unique
+  nomeProduto          String @unique
+  preco                String
+  precoRiscado         String
+  descricao            String
+  comprados            String
+  tags                 String
+  altura               String
+  largura              String
+  comprimento          String
+  peso                 String
+  tipo                 String
+  escolhas             String
+  avaliacoes           Review[]
+}
+
+type Produtos {
+  nomeProduto String
+  tipo        String
+  escolha     String
 }
 
 model Pedido {
   id               String @id @default(auto()) @map("_id") @db.ObjectId
-  nomeProduto      String
+  produtos         Produtos[]
   nomeDestinatario String
+  cpfDestinatario  String
   cep              String
   estado           String
   cidade           String
   bairro           String
   rua              String
-  numero           Int
-  valor            Int
-  valorFrete       Float
-  metodoPagamento  String
+  numero           String
+  valor            String
+  valorFrete       String
 }

@@ -10,18 +10,24 @@ import { useSession } from "next-auth/react";
 export default function Editar({ params }: { params: any }) {
   const router = useRouter();
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const inputFileRef2 = useRef<HTMLInputElement>(null);
   const [nomeProduto, setNomeProduto] = useState();
-  const [preco, setPreco] = useState<number>();
-  const [precoRiscado, setPrecoRiscado] = useState<number>();
+  const [preco, setPreco] = useState<string>();
+  const [precoRiscado, setPrecoRiscado] = useState<string>();
   const [descricao, setDescricao] = useState();
-  const [comprados, setComprados] = useState<number>();
-  const [tags, setTags] = useState<number>();
-  const [altura, setAltura] = useState<number>();
-  const [largura, setLargura] = useState<number>();
-  const [comprimento, setComprimento] = useState<number>();
-  const [peso, setPeso] = useState<number>();
+  const [comprados, setComprados] = useState<string>();
+  const [tags, setTags] = useState<string>();
+  const [altura, setAltura] = useState<string>();
+  const [largura, setLargura] = useState<string>();
+  const [comprimento, setComprimento] = useState<string>();
+  const [peso, setPeso] = useState<string>();
   const [image, setImage] = useState<any>(null);
+  const [image2, setImage2] = useState<any>(null);
   const [prevImage, setPrevImage] = useState<any>();
+  const [prevFatos, setPrevFatos] = useState<any>();
+  const [tipos, setTipos] = useState<any>();
+  const [escolhas, setEscolhas] = useState<any>();
+
   const [prevNomeProduto, setPrevNomeProduto] = useState<any>();
   const { data: session } = useSession({
     required: true,
@@ -41,7 +47,9 @@ export default function Editar({ params }: { params: any }) {
       .then((res) => res.json())
       .then((res: any) => {
         setImage(res.imagemURL);
+        setImage2(res.fatosNutricionaisURL);
         setPrevImage(res.imagemURL);
+        setPrevFatos(res.fatosNutricionaisURL);
         setPrevNomeProduto(res.nomeProduto);
         setNomeProduto(res.nomeProduto);
         setPreco(res.preco);
@@ -52,6 +60,8 @@ export default function Editar({ params }: { params: any }) {
         setAltura(res.altura);
         setLargura(res.largura);
         setComprimento(res.comprimento);
+        setTipos(res.tipo);
+        setEscolhas(res.escolhas);
         setPeso(res.peso);
       });
   }, []);
@@ -62,17 +72,69 @@ export default function Editar({ params }: { params: any }) {
     }
   };
 
+  const displayImage2 = (event: any) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage2(URL.createObjectURL(event.target.files[0]));
+    }
+  };
+
   async function submit(event: any) {
     event.preventDefault();
 
-    if (!inputFileRef.current?.files) {
+    if (!inputFileRef.current?.files || !inputFileRef2.current?.files) {
       console.log("error, no file selected");
       throw new Error("No file selected");
     }
 
     const file = inputFileRef.current.files[0];
+    const file2 = inputFileRef2.current.files[0];
 
-    if (file) {
+    if (file && file2) {
+      const response = await fetch(`/api/images?filename=${file.name}`, {
+        method: "POST",
+        body: file,
+      });
+
+      const response2 = await fetch(`/api/images?filename=${file2.name}`, {
+        method: "POST",
+        body: file2,
+      });
+
+      const newBlob = (await response.json()) as PutBlobResult;
+      const newBlob2 = (await response2.json()) as PutBlobResult;
+
+      await fetch("/api/images", {
+        method: "DELETE",
+        body: JSON.stringify({ url: prevImage }),
+      });
+
+      await fetch("/api/images", {
+        method: "DELETE",
+        body: JSON.stringify({ url: prevFatos }),
+      });
+
+      await fetch(`/api/produtos/${nomeProduto}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imagemURL: newBlob.url,
+          fatosNutricionaisURL: newBlob2.url,
+          nomeProduto,
+          preco,
+          precoRiscado,
+          descricao,
+          comprados,
+          tags,
+          altura,
+          largura,
+          comprimento,
+          peso,
+          tipo: tipos,
+          escolhas,
+          avaliacoes: [],
+        }),
+      });
+    } else if (file && !file2) {
       const response = await fetch(`/api/images?filename=${file.name}`, {
         method: "POST",
         body: file,
@@ -90,6 +152,7 @@ export default function Editar({ params }: { params: any }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imagemURL: newBlob.url,
+          fatosNutricionaisURL: prevFatos,
           nomeProduto,
           preco,
           precoRiscado,
@@ -100,6 +163,42 @@ export default function Editar({ params }: { params: any }) {
           largura,
           comprimento,
           peso,
+          tipo: tipos,
+          escolhas,
+          avaliacoes: [],
+        }),
+      });
+    } else if (!file && file) {
+      const response2 = await fetch(`/api/images?filename=${file2.name}`, {
+        method: "POST",
+        body: file2,
+      });
+
+      const newBlob2 = (await response2.json()) as PutBlobResult;
+
+      await fetch("/api/images", {
+        method: "DELETE",
+        body: JSON.stringify({ url: prevFatos }),
+      });
+
+      await fetch(`/api/produtos/${nomeProduto}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imagemURL: prevImage,
+          fatosNutricionaisURL: newBlob2.url,
+          nomeProduto,
+          preco,
+          precoRiscado,
+          descricao,
+          comprados,
+          tags,
+          altura,
+          largura,
+          comprimento,
+          peso,
+          tipo: tipos,
+          escolhas,
           avaliacoes: [],
         }),
       });
@@ -109,6 +208,7 @@ export default function Editar({ params }: { params: any }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imagemURL: prevImage,
+          fatosNutricionaisURL: prevFatos,
           nomeProduto,
           preco,
           precoRiscado,
@@ -119,6 +219,8 @@ export default function Editar({ params }: { params: any }) {
           largura,
           comprimento,
           peso,
+          tipo: tipos,
+          escolhas,
           avaliacoes: [],
         }),
       });
@@ -158,6 +260,28 @@ export default function Editar({ params }: { params: any }) {
             </div>
             <div className="mb-5">
               <label
+                htmlFor="fatosNutriciais"
+                className="text-main-green font-bold block"
+              >
+                Fatos Nutriciais
+              </label>
+              <div className="relative mb-5 w-[300px] h-[300px]">
+                <Image
+                  src={image2}
+                  alt="produto"
+                  layout="fill"
+                  className="border-2 border-main-green rounded-md"
+                ></Image>
+              </div>
+              <input
+                name="fatosNutriciais"
+                onChange={displayImage2}
+                ref={inputFileRef2}
+                type="file"
+              />
+            </div>
+            <div className="mb-5">
+              <label
                 htmlFor="nomeProduto"
                 className="text-main-green font-bold"
               >
@@ -181,7 +305,7 @@ export default function Editar({ params }: { params: any }) {
                 <input
                   required
                   value={preco}
-                  onChange={(e: any) => setPreco(parseFloat(e.target.value))}
+                  onChange={(e: any) => setPreco(e.target.value)}
                   type="text"
                   name="preco"
                   className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[240px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
@@ -196,7 +320,7 @@ export default function Editar({ params }: { params: any }) {
                   required
                   value={precoRiscado}
                   onChange={(e: any) => {
-                    return setPrecoRiscado(parseFloat(e.target.value));
+                    return setPrecoRiscado(e.target.value);
                   }}
                   type="text"
                   name="preco"
@@ -217,6 +341,86 @@ export default function Editar({ params }: { params: any }) {
                 rows={5}
                 className="block transition ease-in-out duration-200 text-white bg-[#333] h-auto w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
               ></textarea>
+            </div>
+            <div className="mb-5">
+              <fieldset className="border-[#333] border-2 p-2">
+                <legend className="text-main-green font-bold mb-2">Tipo</legend>
+
+                <div>
+                  <div>
+                    <input
+                      name="tipo"
+                      required
+                      type="radio"
+                      id="sabor"
+                      value="sabor"
+                      checked={tipos == "Sabor"}
+                      onChange={() => setTipos("Sabor")}
+                    />
+                    <label htmlFor="sabor" className="ms-2">
+                      Sabor
+                    </label>
+                  </div>
+
+                  <div>
+                    <input
+                      name="tipo"
+                      required
+                      type="radio"
+                      id="cor"
+                      value="cor"
+                      checked={tipos == "Cor"}
+                      onChange={() => setTipos("Cor")}
+                    />
+                    <label htmlFor="cor" className="ms-2">
+                      Cor
+                    </label>
+                  </div>
+
+                  <div>
+                    <input
+                      name="tipo"
+                      required
+                      type="radio"
+                      id="tamanho"
+                      value="tamanho"
+                      checked={tipos == "Tamanho"}
+                      onChange={() => setTipos("Tamanho")}
+                    />
+                    <label htmlFor="tamanho" className="ms-2">
+                      Tamanho
+                    </label>
+                  </div>
+
+                  <div>
+                    <input
+                      name="tipo"
+                      required
+                      type="radio"
+                      id="nenhum"
+                      value="nenhum"
+                      checked={tipos == "Nenhum"}
+                      onChange={() => setTipos("Nenhum")}
+                    />
+                    <label htmlFor="nenhum" className="ms-2">
+                      Nenhum
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div className="mb-5">
+              <label htmlFor="escolhas" className="text-main-green font-bold">
+                Escolhas (separadas por ";")
+              </label>
+
+              <input
+                name="escolhas"
+                type="text"
+                value={escolhas}
+                onChange={(e: any) => setEscolhas(e.target.value)}
+                className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
+              />
             </div>
             <div className="mb-5">
               <label
@@ -246,7 +450,7 @@ export default function Editar({ params }: { params: any }) {
                   type="text"
                   required
                   value={altura}
-                  onChange={(e: any) => setAltura(parseFloat(e.target.value))}
+                  onChange={(e: any) => setAltura(e.target.value)}
                   className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
@@ -261,7 +465,7 @@ export default function Editar({ params }: { params: any }) {
                   type="text"
                   required
                   value={largura}
-                  onChange={(e: any) => setLargura(parseFloat(e.target.value))}
+                  onChange={(e: any) => setLargura(e.target.value)}
                   className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
@@ -276,9 +480,7 @@ export default function Editar({ params }: { params: any }) {
                   type="text"
                   required
                   value={comprimento}
-                  onChange={(e: any) =>
-                    setComprimento(parseFloat(e.target.value))
-                  }
+                  onChange={(e: any) => setComprimento(e.target.value)}
                   className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
@@ -295,7 +497,7 @@ export default function Editar({ params }: { params: any }) {
                   type="text"
                   required
                   value={peso}
-                  onChange={(e: any) => setPeso(parseFloat(e.target.value))}
+                  onChange={(e: any) => setPeso(e.target.value)}
                   className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
@@ -311,7 +513,7 @@ export default function Editar({ params }: { params: any }) {
                   required
                   value={comprados}
                   min={0}
-                  onChange={(e: any) => setComprados(parseInt(e.target.value))}
+                  onChange={(e: any) => setComprados(e.target.value)}
                   className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>

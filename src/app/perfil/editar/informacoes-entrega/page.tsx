@@ -1,7 +1,11 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import { handleCepInput, handlePhoneInput } from "@/functions/InputHandlers";
+import {
+  handleCepInput,
+  handleCpf,
+  handlePhoneInput,
+} from "@/functions/InputHandlers";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,6 +15,7 @@ export default function InformacoesEntrega() {
   const [data, setData] = useState<any>();
 
   const [nome, setNome] = useState<string>();
+  const [cpf, setCpf] = useState<string>();
   const [telefone, setTelefone] = useState<string>();
   const [cep, setCep] = useState<string>();
   const [estado, setEstado] = useState<string>();
@@ -54,22 +59,48 @@ export default function InformacoesEntrega() {
     const bairro = (document.getElementById("bairro") as HTMLInputElement)!;
     const rua = (document.getElementById("rua") as HTMLInputElement)!;
 
-    let result;
+    let result: any = await fetch(`https://viacep.com.br/ws/${cep}/json/`).then(
+      (res) => res.json()
+    );
 
-    await fetch(`https://brasilaberto.com/api/v1/zipcode/${cep}`)
-      .then((res) => res.json())
-      .then((data) => (result = data.result));
+    const UF: any = {
+      RO: "Rondônia",
+      AC: "Acre",
+      AM: "Amazonas",
+      RR: "Roraima",
+      PA: "Pará",
+      AP: "Amapá",
+      TO: "Tocantins",
+      MA: "Maranhão",
+      PI: "Piauí",
+      CE: "Ceará",
+      RN: "Rio Grande do Norte",
+      PB: "Paraíba",
+      PE: "Pernambuco",
+      AL: "Alagoas",
+      SE: "Sergipe",
+      BA: "Bahia",
+      MG: "Minas Gerais",
+      ES: "Espírito Santo",
+      RJ: "Rio de Janeiro",
+      SP: "São Paulo",
+      PR: "Paraná",
+      SC: "Santa Catarina",
+      RS: "Rio Grande do Sul",
+      MS: "Mato Grosso do Sul",
+      MT: "Mato Grosso",
+      GO: "Goiás",
+      DF: "Distrito Federal",
+    };
 
-    result = result!;
-
-    estado.value = result.state;
-    cidade.value = result.city;
-    bairro.value = result.district;
-    rua.value = result.street;
-    setEstado(result.state);
-    setCidade(result.city);
-    setBairro(result.district);
-    setRua(result.street);
+    estado.value = UF[result.uf];
+    cidade.value = result.localidade;
+    bairro.value = result.bairro;
+    rua.value = result.logradouro;
+    setEstado(UF[result.uf]);
+    setCidade(result.localidade);
+    setBairro(result.bairro);
+    setRua(result.logradouro);
   }
 
   async function submit(event: any) {
@@ -90,11 +121,12 @@ export default function InformacoesEntrega() {
         rua,
         numero,
         complemento,
-        cpf: data.cpf,
+        cpf,
         cartao: data.numeroCartao,
         nomeCartao: data.nomeCartao,
         cvv: data.cvv,
         validade: data.validade,
+        produtosComprados: data.produtosComprados,
       }),
     });
 
@@ -145,12 +177,29 @@ export default function InformacoesEntrega() {
                   className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
                 />
               </div>
+              <div className="mb-5">
+                <label htmlFor="cpf" className="text-main-green font-bold">
+                  CPF
+                </label>
+                <input
+                  type="text"
+                  name="cpf"
+                  required
+                  value={cpf}
+                  onKeyUp={handleCpf}
+                  onChange={(e: any) => setCpf(e.target.value)}
+                  maxLength={14}
+                  placeholder="000.000.000-00"
+                  className="block transition ease-in-out duration-200 text-white bg-[#333] h-6 w-full max-w-[500px] rounded p-3 box-border outline-0 border-2 border-black focus:border-main-green"
+                />
+              </div>
               <div className="mb-5 flex justify-between">
                 <div>
                   <label
                     htmlFor="telefone"
                     className="text-main-green font-bold"
                   >
+                    <i className="fa-brands fa-whatsapp me-2"></i>
                     Telefone
                   </label>
                   <input
@@ -286,7 +335,7 @@ export default function InformacoesEntrega() {
                 type="submit"
                 className="transition ease-in-out duration-200 p-2 font-bold rounded my-5 border-2 border-main-green text-main-green hover:text-black hover:bg-main-green"
               >
-                Editar
+                Enviar
               </button>
             </div>
           </div>

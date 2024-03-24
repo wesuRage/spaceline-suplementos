@@ -32,6 +32,7 @@ export async function PUT(request: Request, context: any) {
 
     const {
       imagemURL,
+      fatosNutricionaisURL,
       nomeProduto,
       preco,
       precoRiscado,
@@ -47,6 +48,7 @@ export async function PUT(request: Request, context: any) {
 
     if (
       !imagemURL ||
+      !fatosNutricionaisURL ||
       !nomeProduto ||
       !preco ||
       !descricao ||
@@ -76,6 +78,7 @@ export async function PUT(request: Request, context: any) {
       },
       data: {
         imagemURL,
+        fatosNutricionaisURL,
         nomeProduto,
         preco,
         precoRiscado,

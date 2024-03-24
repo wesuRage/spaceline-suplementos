@@ -54,6 +54,21 @@ export default function Dashboard() {
 
   if (!data) return <Spinner />;
 
+  let produtosOrdemAlfabetica: Array<string> = [];
+
+  produtos.map((produto: any) => {
+    produtosOrdemAlfabetica.push(produto);
+    produtosOrdemAlfabetica.sort(function (a: any, b: any) {
+      if (a.nomeProduto < b.nomeProduto) {
+        return -1;
+      }
+      if (a.nomeProduto > b.nomeProduto) {
+        return 1;
+      }
+      return 0;
+    });
+  });
+
   return (
     <main className="flex justify-center">
       <PageContainer>
@@ -103,8 +118,8 @@ export default function Dashboard() {
               </Link>
             </div>
             <ProdutosContainer>
-              {produtos?.length != 0 ? (
-                produtos?.map((produto: any, key: Key) => {
+              {produtosOrdemAlfabetica?.length != 0 ? (
+                produtosOrdemAlfabetica?.map((produto: any, key: Key) => {
                   return (
                     <Produto
                       src={produto.imagemURL}
@@ -128,7 +143,7 @@ export default function Dashboard() {
               className="text-red-500 border-2 border-red-500 p-2 rounded hover:text-black hover:bg-red-500 transiti ease-in-out duration-200 font-bold"
               onClick={() => signOut()}
             >
-              Logout
+              Sair da conta
             </button>
           </div>
         </div>

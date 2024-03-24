@@ -14,6 +14,19 @@ const config: Config = {
     },
 
     extend: {
+      keyframes: {
+        scaleUp: {
+          "0%": {
+            transform: "translate(-50%, -50%) scale(0)",
+          },
+          "90%": {
+            transform: "translate(-50%, -50%) scale(1.1)",
+          },
+          "100%": {
+            transform: "translate(-50%, -50%) scale(1)",
+          },
+        },
+      },
       colors: {
         "main-green": "#4dda41",
         "sec-green": "#053900",

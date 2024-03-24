@@ -32,7 +32,7 @@ export default function Produto({
   }
 
   return (
-    <div className="inline">
+    <div className="block">
       <div className="flex items-center min-w-full md:min-w-full ">
         <Link
           href={`/produtos/${nomeProduto}`}
@@ -56,7 +56,7 @@ export default function Produto({
             </div>
             <Link
               href={`/comprar?itens=${nomeProduto}`}
-              className="h-full bg-main-green p-3 text-black font-bold ms-2"
+              className="h-full bg-main-green p-3 text-black font-bold ms-2 rounded-e-xl"
             >
               COMPRAR
             </Link>

@@ -10,12 +10,7 @@ export default function LoginForm() {
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
   const [visibility, setVisibility] = useState("password");
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push("/login");
-    },
-  });
+  const { data: session } = useSession();
 
   if (session) {
     if (session?.user.role != "admin") {

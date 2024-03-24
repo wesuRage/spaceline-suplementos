@@ -1,15 +1,13 @@
 "use client";
-
 import Spinner from "@/components/Spinner";
 import { Key, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import PageContainer from "./components/PageContainer";
+import PageContainer from "./PageContainer";
 import Image from "next/image";
-import ItemsContainer from "../components/ItemsContainer";
-import ItemCard from "../components/ItemCard";
+import ItemsContainer from "../../components/ItemsContainer";
+import ItemCard from "../../components/ItemCard";
 import { Shuffle } from "@/functions/Shuffle";
-import "./style.css";
 
 export default function Produto({ params }: { params: any }) {
   const { data: session } = useSession();
@@ -68,9 +66,6 @@ export default function Produto({ params }: { params: any }) {
       .then((res) => {
         setData(res);
         setImagem(res.imagemURL);
-      })
-      .catch(() => {
-        router.push("/404");
       });
   }, [params.produto]);
 
@@ -93,21 +88,10 @@ export default function Produto({ params }: { params: any }) {
     return produtosShuffle;
   });
 
-  const relacionados = produtos
-    .map((item: any) => {
-      const tagsArray = item.tags.split(" ");
-      const dataTagsArray = data.tags.split(" ");
-      const tagsEmComum = tagsArray.filter((tag: any) =>
-        dataTagsArray.includes(tag)
-      );
-      return {
-        ...item,
-        tagsEmComum: tagsEmComum.length,
-      };
-    })
-    .filter((item: any) => item.tagsEmComum > 0);
-
-  relacionados.sort((a: any, b: any) => b.tagsEmComum - a.tagsEmComum);
+  const relacionados = produtos.filter((item: any) => {
+    const tagsArray = item.tags.split(" ");
+    return tagsArray.some((tag: string) => data.tags.split(" ").includes(tag));
+  });
 
   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
@@ -146,14 +130,14 @@ export default function Produto({ params }: { params: any }) {
     <main className="flex justify-center">
       <div>
         <PageContainer>
-          <div className="flex md:justify-between md:flex-row flex-col items-center align-middle">
+          <div className="md:flex justify-between items-center align-middle">
             {data.fatosNutricionaisURL ? (
               <div>
                 <div className="flex me-5 items-center p-2">
                   <div className="relative min-w-[300px] h-[300px] cursor-none border-2 border-[#333] rounded-xl">
                     <button
                       onClick={change}
-                      className="transition ease-in-out duration-200 bg-black border-2 border-[#333] h-[50px] w-[50px] rounded-full relative top-[45%] right-6 z-10 active:text-main-green active:border-main-green md:hover:text-main-green md:hover:border-main-green"
+                      className="transition ease-in-out duration-200 bg-black border-2 border-[#333] h-[50px] w-[50px] rounded-full relative top-[45%] right-6 z-10 hover:text-main-green hover:border-main-green"
                     >
                       <i className="fa-solid fa-arrow-left"></i>
                     </button>
@@ -164,9 +148,6 @@ export default function Produto({ params }: { params: any }) {
                       quality={100}
                       onClick={() => setOpenImage(true)}
                       layout="fill"
-                      placeholder="blur"
-                      blurDataURL={imagem}
-                      priority={true}
                       className="rounded-xl select-none z-1"
                       onMouseMove={handleMouseMove}
                       onMouseLeave={handleMouseLeave}
@@ -174,7 +155,7 @@ export default function Produto({ params }: { params: any }) {
                     <div className="magnify" style={magnify}></div>
                     <button
                       onClick={change}
-                      className="transition ease-in-out duration-200 bg-black border-2 border-[#333] h-[50px] w-[50px] rounded-full relative top-[45%] left-[220px] z-10 active:text-main-green active:border-main-green md:hover:text-main-green md:hover:border-main-green"
+                      className="transition ease-in-out duration-200 bg-black border-2 border-[#333] h-[50px] w-[50px] rounded-full relative top-[45%] left-[220px] z-10 hover:text-main-green hover:border-main-green"
                     >
                       <i className="fa-solid fa-arrow-right"></i>
                     </button>
@@ -195,9 +176,6 @@ export default function Produto({ params }: { params: any }) {
                               alt={data.nomeProduto}
                               draggable={false}
                               quality={100}
-                              priority={true}
-                              placeholder="blur"
-                              blurDataURL={imagem}
                               layout="fill"
                               className="relative rounded-xl select-none"
                             />
@@ -258,55 +236,33 @@ export default function Produto({ params }: { params: any }) {
             </div>
             <div>
               <div className="flex flex-col align-middle">
-                {data.tipo != "Nenhum" && (
-                  <div className="mt-5">
-                    <div>
-                      <h1 className="text-main-green font-bold">
-                        {`${data.tipo}`.toUpperCase()}
-                        <span className="text-[#aaa]">:</span>
-                      </h1>
+                <div className="flex justify-center">
+                  <div>
+                    <h1 className="text-main-green font-bold">
+                      {`${data.tipo}`.toUpperCase()}
+                      <span className="text-[#aaa]">:</span>
+                    </h1>
 
-                      <div className="flex flex-wrap max-w-[350px] min-w-[350px]">
-                        {data.escolhas
-                          .split(";")
-                          .map((item: any, index: Key) => {
-                            return (
-                              <button
-                                key={index}
-                                id={item}
-                                onClick={() => {
-                                  document
-                                    .querySelectorAll(".botao-escolha")
-                                    .forEach((element: any) => {
-                                      element.setAttribute(
-                                        "class",
-                                        "botao-escolha transition ease-in-out duration-200 border-2 border-[#555] text-[#555] me-2 mb-2 p-2 rounded-md font-bold hover:text-main-green hover:border-main-green"
-                                      );
-                                    });
-
-                                  document
-                                    .getElementById(item)
-                                    ?.setAttribute(
-                                      "class",
-                                      "botao-escolha transition ease-in-out duration-200 border-2 border-main-green bg-main-green text-black me-2 mb-2 p-2 rounded-md font-bold"
-                                    );
-                                }}
-                                className="botao-escolha transition ease-in-out duration-200 border-2 border-[#555] text-[#555] me-2 mb-2 p-2 rounded-md font-bold hover:text-main-green hover:border-main-green"
-                              >
-                                {`${item}`.toUpperCase()}
-                              </button>
-                            );
-                          })}
-                      </div>
+                    <div className="flex flex-wrap max-w-[330px] min-w-[330px]">
+                      {data.escolhas.split(";").map((item: any, index: Key) => {
+                        return (
+                          <button
+                            key={index}
+                            className="transition ease-in-out duration-200 border-2 border-[#333] text-[#333] me-2 mb-2 p-2 rounded-md hover:text-main-green hover:border-main-green"
+                          >
+                            {`${item}`.toUpperCase()}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
-                )}
+                </div>
                 {!session || session.user.role == "user" ? (
                   <div>
                     <button
                       onClick={adicionarCarrinho}
                       id="adicionar"
-                      className="border-2 border-main-green text-main-green font-bold rounded p-2 w-full mt-5"
+                      className="border-2 border-main-green text-main-green bg-black font-bold rounded p-2 w-full mt-5"
                     >
                       ADICIONAR AO CARRINHO
                     </button>
